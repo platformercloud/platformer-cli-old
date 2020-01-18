@@ -31,13 +31,9 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
   Use:   "platformer",
-  Short: "A brief description of your application",
-  Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+  Short: "A Fully-Manged Developer Platform with CI/CD and DevOps Tools baked in.",
+  Long: `Utilize the power of Kubernetes without the hassle of maintaining your own Kubernetes infrastructure.
+Create your own Cluster or deploy your applications on a shared Cluster fully-managed by Platformer - and pay for only what you use!`,
   // Uncomment the following line if your bare application
   // has an action associated with it:
   //	Run: func(cmd *cobra.Command, args []string) { },
