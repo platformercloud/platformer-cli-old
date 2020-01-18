@@ -21,15 +21,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var logoutCmd = &cobra.Command{
-	Use:   "logout",
-	Short: "log the CLI out of Platformer Cloud",
-
+var projectCmd = &cobra.Command{
+	Use:   "project",
+	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("logout called")
+		fmt.Println("project called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(logoutCmd)
+	rootCmd.AddCommand(projectCmd)
 }
