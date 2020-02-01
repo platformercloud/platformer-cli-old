@@ -26,13 +26,9 @@ import (
 // convertCmd represents the convert command
 var convertCmd = &cobra.Command{
 	Use:   "convert",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Kompose is a conversion tool for Docker Compose to container orchestrators such as Kubernetes (or OpenShift).",
+	Long: `Kompose is a conversion tool for Docker Compose to container orchestrators such as Kubernetes (or OpenShift).
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		switch args[0] {
 		case "kompose":
