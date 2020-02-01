@@ -18,6 +18,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"log"
+	"os"
+	"os/exec"
 )
 
 // convertCmd represents the convert command
@@ -34,7 +37,13 @@ to quickly create a Cobra application.`,
 		switch args[0] {
 		case "kompose":
 			fmt.Println("Looking for docker-compose.yml....")
-			//exec.Cmd{kompose}
+			cmd := exec.Command("kompose", "convert")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			err := cmd.Run()
+			if err != nil {
+				log.Fatalf("cmd.Run() failed with %s\n", err)
+			}
 		}
 
 	},
