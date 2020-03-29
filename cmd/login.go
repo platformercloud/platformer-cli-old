@@ -17,8 +17,8 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"os/exec"
 )
 
 // loginCmd represents the login command
@@ -26,15 +26,24 @@ var loginCmd = &cobra.Command{
 	Use:   "login",
 	Short: "log the CLI into Platformer Cloud",
 	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+and usage of using your command. For example:`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Allow Platformer to collect anonymous CLI usage and error reporting information?")
 		fmt.Println("\nVisit this URL on any device to login in:")
+
+		// let's try the pwd command here
+		var out, err = exec.Command("firebase login").Output()
+		if err != nil {
+			fmt.Printf("%s", err)
+		}
+		fmt.Println("Command Successfully Executed")
+		var output = string(out[:])
+		fmt.Println(output)
 	},
+}
+
+func execute(){
+
 }
 
 func init() {

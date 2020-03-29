@@ -28,7 +28,7 @@ import (
 var cfgFile string
 
 
-// rootCmd represents the base command when called without any subcommands
+// rootCmd represents the base command when called without any sub commands
 var rootCmd = &cobra.Command{
   Use:   "platformer",
   Short: "A Fully-Manged Developer Platform with CI/CD and DevOps Tools baked in.",
