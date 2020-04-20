@@ -43,6 +43,7 @@ var convertCmd = &cobra.Command{
 		}
 
 	},
+	Hidden: true,
 }
 
 func init() {
