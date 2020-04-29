@@ -1,26 +1,145 @@
-/*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
 	"bufio"
 	"fmt"
-	"github.com/spf13/cobra"
+	"gitlab.platformer.com/chamod.p/platformer/internal"
+	"log"
+	"net/http"
 	"os"
+	"time"
+
+	"github.com/fatih/color"
+	"github.com/rs/cors"
+	"github.com/skratchdot/open-golang/open"
+	"github.com/spf13/cobra"
+	"golang.org/x/oauth2"
 )
+
+var (
+	conf *oauth2.Config
+)
+
+func login() {
+	conf = &oauth2.Config{
+		Endpoint: oauth2.Endpoint{
+			AuthURL: "https://console.dev.x.platformer.com/cli-login",
+		},
+		// CLI callback URL
+		RedirectURL: "http://localhost:9999",
+	}
+
+	// Redirect user to consent page to ask for permission
+	// for the scopes specified above.
+	loginUrl := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
+
+	fmt.Println(color.CyanString("You will now be taken to your browser for authentication"))
+	time.Sleep(1 * time.Second)
+
+	if err := open.Run(loginUrl); err != nil {
+		log.Fatalf("cannot open browser: %s", err)
+	}
+
+	time.Sleep(1 * time.Second)
+	fmt.Printf("Authentication URL: %s\n", loginUrl)
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Add("Connection", "keep-alive")
+			w.Header().Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD, CONNECT")
+			w.Header().Add("Access-Control-Allow-Origins", "*")
+			w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Token")
+
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		xToken := r.Header.Get("x-token")
+		permanentToken, err := internal.CreatePermanentToken(xToken)
+		if err != nil {
+			log.Fatalf("error creating permanent token %s", err)
+		}
+
+		err = saveToken(permanentToken)
+		if err != nil {
+			w.WriteHeader(400)
+			fmt.Printf("error Message: %s", err)
+			os.Exit(1)
+		}
+
+		_, err = w.Write([]byte("Success"))
+		if err != nil {
+			log.Fatalf("response error %s", err)
+		}
+
+		w.WriteHeader(200)
+
+		fmt.Println(color.GreenString("Successfully logged"))
+		os.Exit(0)
+	})
+
+	c := cors.New(cors.Options{
+		// @TODO: add production/staging URLs
+		AllowedMethods:     []string{http.MethodPost, http.MethodOptions, http.MethodConnect},
+		AllowedOrigins:     []string{"http://localhost:3000", "https://console.dev.x.platformer.com", "http://localhost:9999"},
+		AllowedHeaders:     []string{"*"},
+		ExposedHeaders:     []string{"*"},
+		AllowCredentials:   true,
+		OptionsPassthrough: false,
+		MaxAge:             120,
+		// Enable Debugging for testing, consider disabling in production
+		Debug: false,
+	})
+
+	server := http.ListenAndServe(":9999", c.Handler(mux))
+
+	log.Fatal(server)
+}
+
+// create .platformer and store the token
+func fileCreate(dir string, token string) {
+
+	// create .platformer dir
+	_, err := os.Stat(dir + "/.platformer/token")
+	if os.IsNotExist(err) {
+		errDir := os.MkdirAll(dir+"/.platformer/", 0755)
+		if errDir != nil {
+			log.Fatal(err)
+		}
+
+	}
+
+	f, err := os.Create(dir + "/.platformer/token")
+	if err != nil {
+		log.Fatal("error file creating. ", err)
+
+	}
+	writer := bufio.NewWriter(f)
+	_, err = writer.WriteString(token)
+	if err != nil {
+		log.Fatalf("error token wrting %s", err)
+	}
+	_ = writer.Flush()
+}
+
+// Save permanent token in local
+func saveToken(token string) error {
+
+	var dir string
+	dir, err := internal.GetOSRootDir()
+	if err != nil {
+		log.Fatalf("%s", err)
+	}
+
+	fileCreate(dir, token)
+
+	// Validate created token file
+	_, err = os.Stat(dir + "/.platformer/token")
+	os.IsNotExist(err)
+	// TOKEN file does not exist
+	return err
+}
 
 // loginCmd represents the login command
 var loginCmd = &cobra.Command{
@@ -29,42 +148,10 @@ var loginCmd = &cobra.Command{
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Allow Platformer to collect anonymous CLI usage and error reporting information?")
-		fmt.Println("\nVisit this URL on any device to login in:")
-
-		var loginURL = `https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=883124016&redirect_uri=http%3A%2F%2Flocalhost%3A9005`
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Println(loginURL)
-		response, _ := reader.ReadString('\n')
-		fmt.Println(response)
-
-
-
-		//var out, err = exec.Command(loginURL).Output()
-		//if err != nil {
-		//	fmt.Printf("%s", err)
-		//}
-		//fmt.Println("Command Successfully Executed")
-		//var output = string(out[:])
-		//fmt.Println(output)
-
+		login()
 	},
-}
-
-func execute() {
-
 }
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all sub commands, e.g.:
-	// loginCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// loginCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
