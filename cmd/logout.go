@@ -17,16 +17,53 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"gitlab.platformer.com/chamod.p/platformer/internal"
+	"io/ioutil"
+	"log"
+	"os"
 )
+
+func removeStoredToken(dir string) {
+
+	// Validate created token file
+	if _, err := os.Stat(dir + "/.platformer/token"); os.IsNotExist(err) {
+		// TOKEN file does not exist
+		fmt.Println(color.YellowString("You haven't logged in before"))
+	}
+
+	dat, err := ioutil.ReadFile(dir + "/.platformer/token")
+	if err != nil {
+		fmt.Printf("%s", err)
+		return
+	}
+
+	token := string(dat)
+
+	if len(token) == 0 {
+		fmt.Println(color.YellowString("You have already logged out"))
+		return
+	}
+	_, _ = os.Create(dir + "/.platformer/token")
+	fmt.Println(color.GreenString("Logged out from Platformer Account"))
+
+}
+
+func logOut() {
+	dir, err := internal.GetOSRootDir()
+	if err != nil {
+		log.Fatalf("error getting root dir : %s", err)
+	}
+	removeStoredToken(dir)
+}
 
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
 	Short: "log the CLI out of Platformer Cloud",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("logout called")
+		logOut()
 	},
 }
 
