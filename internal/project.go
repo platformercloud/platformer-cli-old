@@ -84,3 +84,13 @@ func GetProjects() ([]Project, error) {
 
 	return projectListResponse.Data, nil
 }
+
+func GetProjectsNames(projectList []Project) []string  {
+	var projectNames []string
+
+	for _, project := range projectList{
+		projectNames = append(projectNames, project.ProjectName)
+	}
+
+	return projectNames
+}
