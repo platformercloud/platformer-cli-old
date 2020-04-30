@@ -15,29 +15,29 @@ type orgResponse struct {
 }
 
 type Organization struct {
-	Name     string `json:"name"`
-	UserName string `json:"user_name"`
-	Pending  bool   `json:"pending"`
-	CreatedDate createdDate `json:"created_date"`
-	Owner    bool   `json:"owner"`
-	Uid string `json:"uid"`
-	Id string `json:"id"`
-	OrganizationId string `json:"organization_id"`
-	UserEmail string `json:"user_email"`
+	Name           string      `json:"name"`
+	UserName       string      `json:"user_name"`
+	Pending        bool        `json:"pending"`
+	CreatedDate    createdDate `json:"created_date"`
+	Owner          bool        `json:"owner"`
+	Uid            string      `json:"uid"`
+	Id             string      `json:"id"`
+	OrganizationId string      `json:"organization_id"`
+	UserEmail      string      `json:"user_email"`
 }
 
 type createdDate struct {
-	Seconds int64 `json:"_seconds"`
+	Seconds     int64 `json:"_seconds"`
 	NanoSeconds int64 `json:"nano_seconds"`
 }
 
-func GetOrganizationList()( []Organization,error) {
+func GetOrganizationList() ([]Organization, error) {
 	client := &http.Client{}
 	url := "https://auth-module.dev.x.platformer.com/api/v1/organization/list"
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil,fmt.Errorf("error creating new request : %w", err)
+		return nil, fmt.Errorf("error creating new request : %w", err)
 	}
 
 	token, err := GetLocallyStoredToken()
@@ -48,7 +48,7 @@ func GetOrganizationList()( []Organization,error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil,fmt.Errorf("error reading response body : %w", err)
+		return nil, fmt.Errorf("error reading response body : %w", err)
 	}
 
 	defer resp.Body.Close()
@@ -65,8 +65,15 @@ func GetOrganizationList()( []Organization,error) {
 		fmt.Println(err)
 	}
 
-	//fmt.Println(orgList.Organization)
-	//var orgNames
-
 	return orgList.Organization, nil
+}
+
+func GetOrganizationsNames(organizationList []Organization) []string {
+	var organizationsNames []string
+
+	for _, organization := range organizationList {
+		organizationsNames = append(organizationsNames, organization.Name)
+	}
+
+	return organizationsNames
 }

@@ -89,7 +89,6 @@ func saveProjectSetting(project internal.Project) error {
 		if errDir != nil {
 			return fmt.Errorf("unable to create dir %s", errDir)
 		}
-
 	}
 
 	f, err := os.Create(dir + "/.platformer/projects")
