@@ -56,13 +56,13 @@ func FetchPermanentToken(token string) (string, error) {
 // SaveToken saves the given permanent token to the local config
 func SaveToken(token string) {
 	viper.Set("auth.token", token)
-	viper.SafeWriteConfig()
+	viper.WriteConfig()
 }
 
 // RemoveToken removes the locally saved token
 func RemoveToken() {
 	viper.Set("auth.token", "")
-	viper.SafeWriteConfig()
+	viper.WriteConfig()
 }
 
 // GetToken retrieves the locally stored perm.token

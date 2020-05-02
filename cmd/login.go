@@ -33,6 +33,10 @@ func init() {
 }
 
 func login() error {
+	if auth.IsLoggedIn() {
+		return UserError{fmt.Errorf("you are already logged in")}
+	}
+
 	server := &http.Server{Addr: port}
 	done := make(chan string)
 	errc := make(chan error)
@@ -69,6 +73,7 @@ func login() error {
 		}
 
 		auth.SaveToken(permanentToken)
+		fmt.Println(color.GreenString("Successfully logged in!"))
 		return nil
 
 	case err := <-errc:
@@ -76,6 +81,7 @@ func login() error {
 		return InternalError{err, "cannot listen on port " + port}
 
 	case <-time.After(2 * time.Minute):
+		server.Close()
 		return UserError{fmt.Errorf("timed out, try again")}
 	}
 }
