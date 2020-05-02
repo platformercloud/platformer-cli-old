@@ -17,11 +17,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
-	"gitlab.platformer.com/chamod.p/platformer/internal"
-	"log"
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 )
 
 // selectCmd represents the select command

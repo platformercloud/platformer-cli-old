@@ -3,11 +3,12 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"gitlab.platformer.com/chamod.p/platformer/internal"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 
 	"github.com/fatih/color"
 	"github.com/rs/cors"
@@ -29,19 +30,18 @@ func login() {
 		RedirectURL: "http://localhost:9999",
 	}
 
-	// Redirect user to consent page to ask for permission
-	// for the scopes specified above.
-	loginUrl := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
+	loginURL := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 
 	fmt.Println(color.CyanString("You will now be taken to your browser for authentication"))
 	time.Sleep(1 * time.Second)
 
-	if err := open.Run(loginUrl); err != nil {
+	// Redirect user to consent page to ask for permission
+	if err := open.Run(loginURL); err != nil {
 		log.Fatalf("cannot open browser: %s", err)
 	}
 
 	time.Sleep(1 * time.Second)
-	fmt.Printf("Authentication URL: %s\n", loginUrl)
+	fmt.Printf("Authentication URL: %s\n", loginURL)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

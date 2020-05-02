@@ -1,4 +1,4 @@
-module gitlab.platformer.com/chamod.p/platformer
+module gitlab.platformer.com/project-x/platformer-cli
 
 go 1.13
 

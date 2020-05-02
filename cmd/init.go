@@ -18,12 +18,13 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
-	"gitlab.platformer.com/chamod.p/platformer/internal"
-	"log"
-	"os"
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 )
 
 // initCmd represents the init command

@@ -17,12 +17,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/spf13/cobra"
-	"gitlab.platformer.com/chamod.p/platformer/internal"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 )
 
 func removeStoredToken(dir string) {

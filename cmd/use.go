@@ -18,11 +18,12 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/spf13/cobra"
-	"gitlab.platformer.com/chamod.p/platformer/internal"
 	"log"
 	"strings"
+
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 )
 
 // useCmd represents the use command

@@ -17,9 +17,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/fatih/color"
-	"gitlab.platformer.com/chamod.p/platformer/internal"
 	"log"
+
+	"github.com/fatih/color"
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 
 	"github.com/spf13/cobra"
 )
