@@ -11,7 +11,7 @@ var logoutCmd = &cobra.Command{
 	Use:   "logout",
 	Short: "Log out from your Platformer account",
 	Run: func(cmd *cobra.Command, args []string) {
-		HandleCommandAndExit(logOut())
+		HandleErrorAndExit(logOut())
 	},
 }
 
@@ -20,10 +20,8 @@ func init() {
 }
 
 func logOut() error {
-	return UserError{fmt.Errorf("fuck me")}
 	if !auth.IsLoggedIn() {
-		fmt.Println("Not logged in")
-		return fmt.Errorf("not logged in")
+		return UserError{fmt.Errorf("you are not logged in")}
 	}
 
 	auth.RemoveToken()

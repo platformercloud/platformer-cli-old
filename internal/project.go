@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
 )
 
 type projectsResponse struct {
@@ -56,10 +58,10 @@ func GetProjects() ([]Project, error) {
 		return nil, fmt.Errorf("error creating new request : %w", err)
 	}
 
-	token, err := GetLocallyStoredToken()
-	if err != nil {
-		return nil, fmt.Errorf("error getting token %s", err)
-	}
+	token := auth.GetToken()
+	// if err != nil {
+	// 	return nil, fmt.Errorf("error getting token %s", err)
+	// }
 
 	req.Header.Add("Authorization", strings.TrimSpace(token))
 
@@ -85,10 +87,10 @@ func GetProjects() ([]Project, error) {
 	return projectListResponse.Data, nil
 }
 
-func GetProjectsNames(projectList []Project) []string  {
+func GetProjectsNames(projectList []Project) []string {
 	var projectNames []string
 
-	for _, project := range projectList{
+	for _, project := range projectList {
 		projectNames = append(projectNames, project.ProjectName)
 	}
 

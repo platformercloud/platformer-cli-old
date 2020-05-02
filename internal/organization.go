@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
 )
 
 type orgResponse struct {
@@ -40,10 +42,10 @@ func GetOrganizationList() ([]Organization, error) {
 		return nil, fmt.Errorf("error creating new request : %w", err)
 	}
 
-	token, err := GetLocallyStoredToken()
-	if err != nil {
-		return nil, fmt.Errorf("error getting token %s", err)
-	}
+	token := auth.GetToken()
+	// if err != nil {
+	// 	return nil, fmt.Errorf("error getting token %s", err)
+	// }
 	req.Header.Add("Authorization", strings.TrimSpace(token))
 
 	resp, err := client.Do(req)

@@ -49,9 +49,9 @@ func (e *InternalError) HandleAndExit() {
 	os.Exit(1)
 }
 
-// HandleCommandAndExit wraps all top level command functions.
-// Example: HandleCommandAndExit(logOut())
-func HandleCommandAndExit(err error) {
+// HandleErrorAndExit wraps all top level command functions.
+// Example: HandleErrorAndExit(logOut())
+func HandleErrorAndExit(err error) {
 	if err == nil {
 		return
 	}

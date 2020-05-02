@@ -14,9 +14,9 @@ import (
 
 const tokenCreateURL = "https://auth-module.dev.x.platformer.com/api/v1/serviceaccount/token/create"
 
-// CreatePermanentToken fetches a Permanent token from the Auth API
+// FetchPermanentToken fetches a Permanent token from the Auth API
 // using the provided access token
-func CreatePermanentToken(token string) (string, error) {
+func FetchPermanentToken(token string) (string, error) {
 	b, err := json.Marshal(struct {
 		Name        string  `json:"name"`
 		Description string  `json:"description"`
@@ -63,4 +63,9 @@ func SaveToken(token string) {
 func RemoveToken() {
 	viper.Set("auth.token", "")
 	viper.SafeWriteConfig()
+}
+
+// GetToken retrieves the locally stored perm.token
+func GetToken() string {
+	return viper.GetString("auth.token")
 }
