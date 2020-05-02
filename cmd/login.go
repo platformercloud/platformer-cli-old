@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"gitlab.platformer.com/project-x/platformer-cli/internal"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
 
 	"github.com/fatih/color"
 	"github.com/rs/cors"
@@ -21,62 +22,53 @@ var (
 	conf *oauth2.Config
 )
 
-func login() {
+const port string = ":9999"
+
+func login() error {
 	conf = &oauth2.Config{
 		Endpoint: oauth2.Endpoint{
 			AuthURL: "https://console.dev.x.platformer.com/cli-login",
 		},
-		// CLI callback URL
-		RedirectURL: "http://localhost:9999",
+		RedirectURL: "http://127.0.0.1" + port,
 	}
 
 	loginURL := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 
-	fmt.Println(color.CyanString("You will now be taken to your browser for authentication"))
+	fmt.Printf("Visit this URL on your device to log in:\n%s\n", loginURL)
+	fmt.Println(color.CyanString("\nYou will now be taken to your browser for authentication"))
 	time.Sleep(1 * time.Second)
 
 	// Redirect user to consent page to ask for permission
 	if err := open.Run(loginURL); err != nil {
-		log.Fatalf("cannot open browser: %s", err)
+		return UserError{fmt.Errorf("cannot open browser: %s", err)}
 	}
 
-	time.Sleep(1 * time.Second)
-	fmt.Printf("Authentication URL: %s\n", loginURL)
+	// Start the server and wait for user to log in.
+	server := &http.Server{Addr: port}
+	tokenChan := make(chan string)
+	go startServerAndAwaitToken(server, tokenChan)
+	token := <-tokenChan
+	server.Close()
 
+	permanentToken, err := auth.CreatePermanentToken(token)
+	if err != nil {
+		return InternalError{err, "failed to sign in"}
+	}
+
+	err = saveToken(permanentToken)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func startServerAndAwaitToken(server *http.Server, tokenChan chan<- string) error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodOptions {
-			w.Header().Add("Connection", "keep-alive")
-			w.Header().Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD, CONNECT")
-			w.Header().Add("Access-Control-Allow-Origins", "*")
-			w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Token")
-
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		xToken := r.Header.Get("x-token")
-		permanentToken, err := internal.CreatePermanentToken(xToken)
-		if err != nil {
-			log.Fatalf("error creating permanent token %s", err)
-		}
-
-		err = saveToken(permanentToken)
-		if err != nil {
-			w.WriteHeader(400)
-			fmt.Printf("error Message: %s", err)
-			os.Exit(1)
-		}
-
-		_, err = w.Write([]byte("Success"))
-		if err != nil {
-			log.Fatalf("response error %s", err)
-		}
-
+		token := r.Header.Get("x-token")
+		tokenChan <- token
 		w.WriteHeader(200)
-
-		fmt.Println(color.GreenString("Successfully logged"))
-		os.Exit(0)
 	})
 
 	c := cors.New(cors.Options{
@@ -91,10 +83,8 @@ func login() {
 		// Enable Debugging for testing, consider disabling in production
 		Debug: false,
 	})
-
-	server := http.ListenAndServe(":9999", c.Handler(mux))
-
-	log.Fatal(server)
+	server.Handler = c.Handler(mux)
+	return server.ListenAndServe()
 }
 
 // create .platformer and store the token
@@ -144,9 +134,7 @@ func saveToken(token string) error {
 // loginCmd represents the login command
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "log the CLI into Platformer Cloud",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:`,
+	Short: "Log into Platformer through the CLI",
 	Run: func(cmd *cobra.Command, args []string) {
 		login()
 	},

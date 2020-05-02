@@ -10,12 +10,12 @@ import (
 
 func main() {
 	if err := config.InitPlatformerDirectory(); err != nil {
-		fmt.Fprintf(os.Stderr, "fatal: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Fatal Error: %v\n", err)
 		os.Exit(1)
 	}
 
 	if err := config.InitDebugLogs(); err != nil {
-		fmt.Fprintf(os.Stderr, "fatal: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Fatal Error: %v\n", err)
 		os.Exit(1)
 	}
 

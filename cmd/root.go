@@ -1,18 +1,3 @@
-/*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
@@ -31,9 +16,6 @@ var rootCmd = &cobra.Command{
 	Short: "A Fully-Manged Developer Platform with CI/CD and DevOps Tools baked in.",
 	Long: `Utilize the power of Kubernetes without the hassle of maintaining your own Kubernetes infrastructure.
 Create your own Cluster or deploy your applications on a shared Cluster fully-managed by Platformer - and pay for only what you use!`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

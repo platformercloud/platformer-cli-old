@@ -29,7 +29,7 @@ func init() {
 	}
 
 	PlatformerDir = path.Join(home, ".platformer")
-	ConfigPath = path.Join(PlatformerDir, "config")
+	ConfigPath = path.Join(PlatformerDir, "config.yaml")
 	LogFile = path.Join(PlatformerDir, "debug-log")
 }
 
