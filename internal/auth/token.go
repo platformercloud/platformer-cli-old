@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/spf13/viper"
 	"github.com/tidwall/gjson"
 )
 
@@ -50,4 +51,16 @@ func CreatePermanentToken(token string) (string, error) {
 
 	permanentToken := gjson.Get(responseString, "data.token")
 	return permanentToken.Str, nil
+}
+
+// SaveToken saves the given permanent token to the local config
+func SaveToken(token string) {
+	viper.Set("auth.token", token)
+	viper.SafeWriteConfig()
+}
+
+// RemoveToken removes the locally saved token
+func RemoveToken() {
+	viper.Set("auth.token", "")
+	viper.SafeWriteConfig()
 }
