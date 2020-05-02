@@ -9,6 +9,9 @@ import (
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
+var redFprint = color.New(color.Bold, color.FgRed).FprintfFunc()
+var magentaFprint = color.New(color.FgMagenta).FprintfFunc()
+
 // UserError defines an error that can be safely printed
 // to the console without leaking implementation details.
 type UserError struct {
@@ -30,9 +33,6 @@ type InternalError struct {
 	error
 	Message string
 }
-
-var redFprint = color.New(color.Bold, color.FgRed).FprintfFunc()
-var magentaFprint = color.New(color.FgMagenta).FprintfFunc()
 
 // HandleAndExit prints the actual error to the debug-log and prints
 // a prefixed user friendly 'Message' to stderr and exits with a non-zero return.

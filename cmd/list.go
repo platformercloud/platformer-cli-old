@@ -20,9 +20,8 @@ import (
 	"log"
 
 	"github.com/fatih/color"
-	"gitlab.platformer.com/project-x/platformer-cli/internal"
-
 	"github.com/spf13/cobra"
+	"gitlab.platformer.com/project-x/platformer-cli/internal"
 )
 
 func displayOrganizationNames(list []internal.Organization) {

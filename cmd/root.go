@@ -21,10 +21,7 @@ Create your own Cluster or deploy your applications on a shared Cluster fully-ma
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s", err)
-		os.Exit(1)
-	}
+	rootCmd.Execute()
 }
 
 func init() {
