@@ -12,17 +12,22 @@ import (
 var redFprint = color.New(color.Bold, color.FgRed).FprintfFunc()
 var magentaFprint = color.New(color.FgMagenta).FprintfFunc()
 
+// CLIError must implemented by all custom errors in this package
+type CLIError interface {
+	error
+	HandleAndExit()
+}
+
 // UserError defines an error that can be safely printed
 // to the console without leaking implementation details.
-type UserError struct {
-	error
-}
+type UserError struct{ error }
 
 // HandleAndExit prints the user-friendly error to the debug-log and prints
 // a prefixed error details to stderr and exits with a non-zero return.
 func (e *UserError) HandleAndExit() {
 	log.Printf("[user] error: %v\n", e)
-	redFprint(os.Stderr, "Error: %s\n", e)
+	redFprint(os.Stderr, "Error: ")
+	fmt.Fprintf(os.Stderr, "%s\n", e)
 	os.Exit(1)
 }
 
@@ -49,6 +54,17 @@ func (e *InternalError) HandleAndExit() {
 	os.Exit(1)
 }
 
+// NotLoggedInError is thrown when the user is not logged
+// into the CLI
+type NotLoggedInError struct{ error }
+
+// HandleAndExit prints a message to the user to log in
+func (e *NotLoggedInError) HandleAndExit() {
+	redFprint(os.Stderr, "Error: Not logged in\n")
+	fmt.Println("Use `platformer login` to log in and then retry the this command")
+	os.Exit(1)
+}
+
 // HandleErrorAndExit wraps all top level command functions.
 // Example: HandleErrorAndExit(logOut())
 func HandleErrorAndExit(err error) {
@@ -57,13 +73,13 @@ func HandleErrorAndExit(err error) {
 	}
 
 	switch e := err.(type) {
-	case UserError:
+	case CLIError:
 		e.HandleAndExit()
-	case InternalError:
-		e.HandleAndExit()
+		break
 	default:
 		// Unspecified error: will be cast as an internal error
-		err := InternalError{err, "refer debug-logs"}
+		err := &InternalError{err, "refer debug-logs"}
 		err.HandleAndExit()
 	}
+
 }

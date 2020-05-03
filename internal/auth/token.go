@@ -22,6 +22,7 @@ func FetchPermanentToken(token string) (string, error) {
 		Description string  `json:"description"`
 		ExpiredIn   *string `json:"expired_in"`
 	}{
+		// @todo - add proper values here
 		"test-service account",
 		"",
 		nil,
@@ -55,7 +56,7 @@ func FetchPermanentToken(token string) (string, error) {
 
 // SaveToken saves the given permanent token to the local config
 func SaveToken(token string) {
-	viper.Set("auth.token", token)
+	viper.Set("auth.token", strings.TrimSpace(token))
 	viper.WriteConfig()
 }
 

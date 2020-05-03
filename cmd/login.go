@@ -18,7 +18,11 @@ var (
 	oauthConfig *oauth2.Config
 )
 
-const port string = ":9999"
+const (
+	authURL     string = "https://console.dev.x.platformer.com/cli-login"
+	port        string = ":9999"
+	redirectURL string = "http://127.0.0.1" + port
+)
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
@@ -34,7 +38,7 @@ func init() {
 
 func login() error {
 	if auth.IsLoggedIn() {
-		return UserError{fmt.Errorf("you are already logged in")}
+		return &UserError{fmt.Errorf("you are already logged in")}
 	}
 
 	server := &http.Server{Addr: port}
@@ -45,10 +49,8 @@ func login() error {
 	go startServerAndAwaitToken(server, done, errc)
 
 	oauthConfig = &oauth2.Config{
-		Endpoint: oauth2.Endpoint{
-			AuthURL: "https://console.dev.x.platformer.com/cli-login",
-		},
-		RedirectURL: "http://127.0.0.1" + port,
+		Endpoint:    oauth2.Endpoint{AuthURL: authURL},
+		RedirectURL: redirectURL,
 	}
 
 	loginURL := oauthConfig.AuthCodeURL("state", oauth2.AccessTypeOffline)
@@ -59,7 +61,7 @@ func login() error {
 
 	// Redirect user to CLI login page
 	if err := open.Run(loginURL); err != nil {
-		return UserError{fmt.Errorf("cannot open browser: %s", err)}
+		return &UserError{fmt.Errorf("cannot open browser: %s", err)}
 	}
 
 	// Block until a response from the server is recieved
@@ -69,7 +71,7 @@ func login() error {
 		server.Close()
 		permanentToken, err := auth.FetchPermanentToken(token)
 		if err != nil {
-			return InternalError{err, "failed to sign in"}
+			return &InternalError{err, "failed to sign in"}
 		}
 
 		auth.SaveToken(permanentToken)
@@ -78,11 +80,11 @@ func login() error {
 
 	case err := <-errc:
 		server.Close()
-		return InternalError{err, "cannot listen on port " + port}
+		return &InternalError{err, "cannot listen on port " + port}
 
 	case <-time.After(2 * time.Minute):
 		server.Close()
-		return UserError{fmt.Errorf("timed out, try again")}
+		return &UserError{fmt.Errorf("timed out, try again")}
 	}
 }
 
@@ -91,7 +93,7 @@ func startServerAndAwaitToken(server *http.Server, tokenChan chan<- string, errc
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("x-token")
 		if token == "" {
-			errc <- UserError{fmt.Errorf("failed to log in")}
+			errc <- &UserError{fmt.Errorf("failed to log in")}
 			w.WriteHeader(400)
 			return
 		}

@@ -17,10 +17,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"os/exec"
+
+	"github.com/spf13/cobra"
 )
 
 // convertCmd represents the convert command

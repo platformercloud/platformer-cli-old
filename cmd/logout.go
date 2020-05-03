@@ -21,7 +21,7 @@ func init() {
 
 func logOut() error {
 	if !auth.IsLoggedIn() {
-		return UserError{fmt.Errorf("you are not logged in")}
+		return &UserError{fmt.Errorf("you are not logged in")}
 	}
 
 	auth.RemoveToken()
