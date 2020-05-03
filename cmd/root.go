@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"gitlab.platformer.com/project-x/platformer-cli/cmd/list"
 	"gitlab.platformer.com/project-x/platformer-cli/cmd/selectprompt"
+	"gitlab.platformer.com/project-x/platformer-cli/cmd/set"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
@@ -36,6 +37,13 @@ func init() {
 		}
 	})
 
+	registerModuleCommands()
+}
+
+// registerModuleCommands registers all packaged commands
+// (these cannot register themselves with init())
+func registerModuleCommands() {
 	rootCmd.AddCommand(list.ListCmd)
 	rootCmd.AddCommand(selectprompt.SelectCmd)
+	rootCmd.AddCommand(set.SetCmd)
 }
