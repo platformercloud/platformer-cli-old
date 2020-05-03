@@ -71,9 +71,6 @@ func LoadOrganizationList() (OrganizationList, error) {
 	orgList := OrganizationList{}
 	for _, org := range orgListResponse.Data {
 		orgList[org.Name] = org
-		if currentOrgName == org.Name {
-			currentOrg = &org
-		}
 	}
 
 	return orgList, nil
