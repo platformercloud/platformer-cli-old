@@ -1,8 +1,15 @@
+package cli
+
+import (
+	"fmt"
+	"os"
+)
+
 // NotLoggedInError is thrown when the user is not logged
 // into the CLI
 type NotLoggedInError struct{ Message string }
 
-func (e *UserError) Error() string {
+func (e *NotLoggedInError) Error() string {
 	return fmt.Sprintf("%s: %s", redSprint("Authentication Error"), e.Message)
 }
 

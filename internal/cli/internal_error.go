@@ -20,6 +20,10 @@ type InternalError struct {
 	Message string
 }
 
+func (e *InternalError) Error() string {
+	return e.Err.Error()
+}
+
 func (e *InternalError) printAndExit() {
 	log.Printf("[internal] error: %v\n", e)
 
