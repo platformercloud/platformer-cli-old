@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
 var logoutCmd = &cobra.Command{
@@ -24,7 +25,7 @@ func logOut() error {
 		return &UserError{fmt.Errorf("you are not logged in")}
 	}
 
-	auth.RemoveToken()
+	config.RemoveToken()
 	fmt.Println("Successfully logged out from Platformer Cloud")
 	return nil
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/spf13/viper"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
 const (
@@ -31,12 +32,21 @@ type Organization struct {
 // OrganizationList is a map of organizations by Name
 type OrganizationList map[string]Organization
 
+// Names returns the names of the organizations
+func (o OrganizationList) Names() []string {
+	names := []string{}
+	for n := range o {
+		names = append(names, n)
+	}
+	return names
+}
+
 // LoadOrganizationList fetches a list of organizations for the logged in
 // user and also reads the currently selected org from the local config
 // (and validates if the currently selected org is still valid)
 func LoadOrganizationList() (OrganizationList, error) {
 	req, _ := http.NewRequest("GET", orgListURL, nil)
-	req.Header.Add("Authorization", GetToken())
+	req.Header.Add("Authorization", config.GetToken())
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

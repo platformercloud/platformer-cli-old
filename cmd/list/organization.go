@@ -2,6 +2,7 @@ package list
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
@@ -31,9 +32,6 @@ func printOrgList() error {
 		return &cli.InternalError{Err: err, Message: "failed to load organization data"}
 	}
 
-	for orgName := range orgList {
-		fmt.Println(orgName)
-	}
-
+	fmt.Println(strings.Join(orgList.Names(), "\n"))
 	return nil
 }

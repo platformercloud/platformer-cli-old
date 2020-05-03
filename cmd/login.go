@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 
 	"github.com/fatih/color"
 	"github.com/rs/cors"
@@ -74,7 +75,7 @@ func login() error {
 			return &InternalError{err, "failed to sign in"}
 		}
 
-		auth.SaveToken(permanentToken)
+		config.SaveToken(permanentToken)
 		fmt.Println(color.GreenString("Successfully logged in!"))
 		return nil
 

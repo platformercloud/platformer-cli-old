@@ -2,11 +2,12 @@ package list
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
 var (
@@ -34,7 +35,6 @@ var (
 
 func init() {
 	projectListCmd.Flags().StringVarP(&orgNameFlag, "organization", "o", "", "--organization=<ORG_NAME> or -o <ORG_NAME>")
-	projectListCmd.MarkFlagRequired("organization")
 }
 
 func preloadOrganizationsAndValidateSelected() (err error) {
@@ -51,15 +51,15 @@ func preloadOrganizationsAndValidateSelected() (err error) {
 				"or you do not have permission to access it", orgNameFlag)}
 		}
 		orgNameKey = orgNameFlag
-	} else if savedOrgName := viper.GetString("context.organization.name"); savedOrgName != "" {
-		if _, ok := orgList[savedOrgName]; !ok {
+	} else if defaultOrgName := config.GetDefaultOrg(); defaultOrgName != "" {
+		if _, ok := orgList[defaultOrgName]; !ok {
 			return &cli.UserError{Message: fmt.Sprintf("the currently selected organization [%s] does not exist "+
 				"or you do not have permission to access it."+
 				"\nUse --organization=<ORG_NAME> or `platformer use organization` to set a valid organization",
 				orgNameFlag),
 			}
 		}
-		orgNameKey = savedOrgName
+		orgNameKey = defaultOrgName
 	}
 
 	if orgNameKey == "" {
@@ -78,8 +78,6 @@ func printProjectList() error {
 		return &cli.InternalError{Err: err, Message: "failed to load project data"}
 	}
 
-	for p := range projectList {
-		fmt.Println(p)
-	}
+	fmt.Println(strings.Join(projectList.Names(), "\n"))
 	return nil
 }

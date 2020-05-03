@@ -6,6 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gitlab.platformer.com/project-x/platformer-cli/cmd/list"
+	"gitlab.platformer.com/project-x/platformer-cli/cmd/selectprompt"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
@@ -33,4 +35,7 @@ func init() {
 			os.Exit(1)
 		}
 	})
+
+	rootCmd.AddCommand(list.ListCmd)
+	rootCmd.AddCommand(selectprompt.SelectCmd)
 }

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
 type orgResponse struct {
@@ -42,7 +42,7 @@ func GetOrganizationList() ([]Organization, error) {
 		return nil, fmt.Errorf("error creating new request : %w", err)
 	}
 
-	token := auth.GetToken()
+	token := config.GetToken()
 	// if err != nil {
 	// 	return nil, fmt.Errorf("error getting token %s", err)
 	// }
@@ -68,14 +68,4 @@ func GetOrganizationList() ([]Organization, error) {
 	}
 
 	return orgList.Organization, nil
-}
-
-func GetOrganizationsNames(organizationList []Organization) []string {
-	var organizationsNames []string
-
-	for _, organization := range organizationList {
-		organizationsNames = append(organizationsNames, organization.Name)
-	}
-
-	return organizationsNames
 }
