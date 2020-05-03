@@ -2,3 +2,4 @@
 vendor/
 *.log
 platformer-cli.exe
+.vscode/
