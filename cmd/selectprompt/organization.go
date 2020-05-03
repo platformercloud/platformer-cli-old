@@ -2,7 +2,6 @@ package selectprompt
 
 import (
 	"fmt"
-	"reflect"
 
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
@@ -33,8 +32,7 @@ func selectOrgWithPrompt() error {
 
 	_, selectedOrgName, err := prompt.Run()
 	if err != nil {
-		fmt.Println(reflect.TypeOf(err))
-		return &cli.InternalError{Err: err, Message: "prompt failed"}
+		// Do nothing; this error is thrown if the user quits the CLI with ctrl+C
 	}
 
 	if selectedOrgName == "" {

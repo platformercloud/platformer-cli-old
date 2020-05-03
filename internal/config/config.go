@@ -25,11 +25,22 @@ func GetToken() string {
 
 // SetDefaultOrg saves a given organization name to the local config
 func SetDefaultOrg(orgName string) {
-	viper.Set("context.organization", orgName)
+	viper.Set("context.organization", strings.TrimSpace(orgName))
 	viper.WriteConfig()
 }
 
 // GetDefaultOrg retrieves the saved default org name from the local config
 func GetDefaultOrg() string {
 	return viper.GetString("context.organization")
+}
+
+// SetDefaultProject saves a given project name to the local config
+func SetDefaultProject(projectName string) {
+	viper.Set("context.project", strings.TrimSpace(projectName))
+	viper.WriteConfig()
+}
+
+// GetDefaultProject retrieves the saved default project name from the local config
+func GetDefaultProject() string {
+	return viper.GetString("context.project")
 }

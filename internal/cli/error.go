@@ -13,6 +13,7 @@ var (
 
 // Error must implemented by all cli errors in this package
 type Error interface {
+	Error() string
 	printAndExit()
 }
 

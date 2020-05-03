@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 
 	"github.com/fatih/color"
@@ -29,7 +30,7 @@ var loginCmd = &cobra.Command{
 	Use:   "login",
 	Short: "Log into Platformer through the CLI",
 	Run: func(cmd *cobra.Command, args []string) {
-		HandleErrorAndExit(login())
+		cli.HandleErrorAndExit(login())
 	},
 }
 
@@ -39,7 +40,7 @@ func init() {
 
 func login() error {
 	if auth.IsLoggedIn() {
-		return &UserError{fmt.Errorf("you are already logged in")}
+		return &cli.UserError{Message: "you are already logged in"}
 	}
 
 	server := &http.Server{Addr: port}
@@ -62,7 +63,7 @@ func login() error {
 
 	// Redirect user to CLI login page
 	if err := open.Run(loginURL); err != nil {
-		return &UserError{fmt.Errorf("cannot open browser: %s", err)}
+		return &cli.UserError{Message: fmt.Sprintf("cannot open browser: %s", err)}
 	}
 
 	// Block until a response from the server is recieved
@@ -72,7 +73,7 @@ func login() error {
 		server.Close()
 		permanentToken, err := auth.FetchPermanentToken(token)
 		if err != nil {
-			return &InternalError{err, "failed to sign in"}
+			return &cli.InternalError{Err: err, Message: "failed to sign in"}
 		}
 
 		config.SaveToken(permanentToken)
@@ -81,11 +82,11 @@ func login() error {
 
 	case err := <-errc:
 		server.Close()
-		return &InternalError{err, "cannot listen on port " + port}
+		return &cli.InternalError{Err: err, Message: "cannot listen on port " + port}
 
 	case <-time.After(2 * time.Minute):
 		server.Close()
-		return &UserError{fmt.Errorf("timed out, try again")}
+		return &cli.UserError{Message: "timed out, try again"}
 	}
 }
 
@@ -94,7 +95,7 @@ func startServerAndAwaitToken(server *http.Server, tokenChan chan<- string, errc
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("x-token")
 		if token == "" {
-			errc <- &UserError{fmt.Errorf("failed to log in")}
+			errc <- &cli.UserError{Message: "failed to log in"}
 			w.WriteHeader(400)
 			return
 		}

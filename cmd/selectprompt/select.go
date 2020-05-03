@@ -12,9 +12,11 @@ var SelectCmd = &cobra.Command{
 	Short: "Open a select prompt to set your default organization and project",
 	ValidArgs: []string{
 		organizationSelectCmd.Use,
+		projectSelectCmd.Use,
 	},
 	ArgAliases: append(
 		organizationSelectCmd.Aliases,
+		projectSelectCmd.Aliases...,
 	),
 	Args: cobra.ExactValidArgs(1),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
@@ -30,4 +32,5 @@ var SelectCmd = &cobra.Command{
 
 func init() {
 	SelectCmd.AddCommand(organizationSelectCmd)
+	SelectCmd.AddCommand(projectSelectCmd)
 }

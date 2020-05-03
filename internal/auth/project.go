@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
@@ -66,4 +67,45 @@ func LoadProjectList(organizationID string) (ProjectList, error) {
 	}
 
 	return projectList, nil
+}
+
+// LoadProjectsFromDefaultOrFlag loads the projects for either the provided
+// orgFlag or the default organization. The returned error will be of type cli.Error
+// Note: If orgFlag is provided it will not use the saved default organization.
+func LoadProjectsFromDefaultOrFlag(orgFlag string) (orgName string, projectList ProjectList, err error) {
+	orgList, err := LoadOrganizationList()
+	if err != nil {
+		return "", nil, &cli.InternalError{Err: err, Message: "failed to load organization data"}
+	}
+
+	if orgFlag != "" {
+		// The org flag has been set; ignore the currently selected org in the local config
+		if _, ok := orgList[orgFlag]; !ok {
+			return "", nil, &cli.UserError{Message: fmt.Sprintf("the organization [%s] does not exist "+
+				"or you do not have permission to access it", orgFlag)}
+		}
+		orgName = orgFlag
+	} else if defaultOrgName := config.GetDefaultOrg(); defaultOrgName != "" {
+		if _, ok := orgList[defaultOrgName]; !ok {
+			return "", nil, &cli.UserError{Message: fmt.Sprintf("the currently selected organization [%s] does not exist "+
+				"or you do not have permission to access it."+
+				"\nUse --organization=<ORG_NAME> or `platformer use organization` to set a valid organization",
+				defaultOrgName),
+			}
+		}
+		orgName = defaultOrgName
+	}
+
+	if orgName == "" {
+		return "", nil, &cli.UserError{Message: "an organization must be selected." +
+			"\nUse --organization=<ORG_NAME> or `platformer use organization` to set a valid organization",
+		}
+	}
+
+	projectList, err = LoadProjectList(orgList[orgName].ID)
+	if err != nil {
+		return orgName, nil, &cli.InternalError{Err: err, Message: "failed to load project data"}
+	}
+
+	return orgName, projectList, nil
 }

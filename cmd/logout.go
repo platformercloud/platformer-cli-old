@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
+	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
@@ -12,7 +13,7 @@ var logoutCmd = &cobra.Command{
 	Use:   "logout",
 	Short: "Log out from your Platformer account",
 	Run: func(cmd *cobra.Command, args []string) {
-		HandleErrorAndExit(logOut())
+		cli.HandleErrorAndExit(logOut())
 	},
 }
 
@@ -22,7 +23,7 @@ func init() {
 
 func logOut() error {
 	if !auth.IsLoggedIn() {
-		return &UserError{fmt.Errorf("you are not logged in")}
+		return &cli.NotLoggedInError{}
 	}
 
 	config.RemoveToken()
