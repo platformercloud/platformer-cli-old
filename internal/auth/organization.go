@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/spf13/viper"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
@@ -69,22 +68,12 @@ func LoadOrganizationList() (OrganizationList, error) {
 		return nil, err
 	}
 
-	currentOrgName := viper.GetString("context.organization")
-	var currentOrg *Organization
-
 	orgList := OrganizationList{}
 	for _, org := range orgListResponse.Data {
 		orgList[org.Name] = org
 		if currentOrgName == org.Name {
 			currentOrg = &org
 		}
-	}
-
-	if currentOrg == nil {
-		// The current organization name is not in the
-		// new list of organizations. Remove the stale value from config
-		viper.Set("context.organization", "")
-		viper.WriteConfig()
 	}
 
 	return orgList, nil
