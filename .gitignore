@@ -1,3 +1,5 @@
 .idea/
 vendor/
 *.log
+platformer-cli.exe
+.vscode/
