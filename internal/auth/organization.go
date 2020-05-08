@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -74,4 +75,21 @@ func LoadOrganizationList() (OrganizationList, error) {
 	}
 
 	return orgList, nil
+}
+
+// GetOrganizationIDFromName returns the *Organization from a given name
+func GetOrganizationIDFromName(orgName string) (*Organization, error) {
+	orgList, err := LoadOrganizationList()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, n := range orgList.Names() {
+		if orgName == n {
+			org := orgList[n]
+			return &org, nil
+		}
+	}
+
+	return nil, fmt.Errorf("organization does not exist")
 }
