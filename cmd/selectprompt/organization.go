@@ -3,8 +3,8 @@ package selectprompt
 import (
 	"fmt"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/fatih/color"
-	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
@@ -25,14 +25,14 @@ func selectOrgWithPrompt() error {
 		return &cli.InternalError{Err: err, Message: "failed to load organization data"}
 	}
 
-	prompt := promptui.Select{
-		Label: "Select Organization",
-		Items: orgList.Names(),
+	prompt := &survey.Select{
+		Message: "Select Organization",
+		Options: orgList.Names(),
 	}
 
-	_, selectedOrgName, err := prompt.Run()
-	if err != nil {
-		// Do nothing; this error is thrown if the user quits the CLI with ctrl+C
+	var selectedOrgName string
+	if err := survey.AskOne(prompt, &selectedOrgName); err != nil {
+		return cli.TransformSurveyError(err)
 	}
 
 	if selectedOrgName == "" {

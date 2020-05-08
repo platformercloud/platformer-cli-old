@@ -1,11 +1,9 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
@@ -78,7 +76,7 @@ func connectCluster() error {
 
 	var selection struct{ ClusterName string }
 	if err := survey.Ask(qs, &selection); err != nil {
-		return transformSurveyError(err)
+		return cli.TransformSurveyError(err)
 	}
 
 	green := color.New(color.FgHiGreen).SprintfFunc()
@@ -91,7 +89,7 @@ func connectCluster() error {
 
 	var confirm bool
 	if err := survey.AskOne(confirmPrompt, &confirm, survey.WithValidator(survey.Required)); err != nil {
-		return transformSurveyError(err)
+		return cli.TransformSurveyError(err)
 	}
 
 	if !confirm {
@@ -103,7 +101,7 @@ func connectCluster() error {
 		return err
 	}
 
-	fmt.Println(green("Success!"), "Cluster", selection.ClusterName, "has been successfully connected to Platformer Cloud")
+	fmt.Println(green("Success!"), "Cluster", selection.ClusterName, "has been succesfully connected to Platformer Cloud")
 	fmt.Println("You may now deploy applications to your application through the platformer console:", consoleURL)
 	return nil
 }
@@ -119,17 +117,4 @@ func getClusterList(kw *mizzen.KubectlWrapper) ([]string, cli.Error) {
 	}
 
 	return clusters, nil
-}
-
-func transformSurveyError(err error) cli.Error {
-	if errors.As(err, &terminal.InterruptErr) {
-		return &cli.CancelError{}
-	}
-	// Not an interrupt error; return it to the user, it's "most likely" a user error.
-	return &cli.UserError{Message: err.Error()}
-}
-
-// @todo
-func connectPrivateCluster(kw *mizzen.KubectlWrapper, org string, project string, cluster string) cli.Error {
-	return &cli.InternalError{Message: "Not Implemented", Err: nil}
 }
