@@ -109,3 +109,20 @@ func LoadProjectsFromDefaultOrFlag(orgFlag string) (orgName string, projectList 
 
 	return orgName, projectList, nil
 }
+
+// GetProjectIDFromName returns the *Project from a given name and an Organization ID
+func GetProjectIDFromName(orgID string, projectName string) (*Project, error) {
+	projectList, err := LoadProjectList(orgID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, n := range projectList.Names() {
+		if projectName == n {
+			p := projectList[n]
+			return &p, nil
+		}
+	}
+
+	return nil, fmt.Errorf("project does not exist")
+}

@@ -19,6 +19,7 @@ func RemoveToken() {
 }
 
 // GetToken retrieves the locally stored perm.token
+// Returns an empty string if the value is not set.
 func GetToken() string {
 	return viper.GetString("auth.token")
 }
@@ -29,7 +30,8 @@ func SetDefaultOrg(orgName string) {
 	viper.WriteConfig()
 }
 
-// GetDefaultOrg retrieves the saved default org name from the local config
+// GetDefaultOrg retrieves the saved default org name from the local config.
+// Returns an empty string if the value is not set.
 func GetDefaultOrg() string {
 	return viper.GetString("context.organization")
 }
@@ -40,7 +42,8 @@ func SetDefaultProject(projectName string) {
 	viper.WriteConfig()
 }
 
-// GetDefaultProject retrieves the saved default project name from the local config
+// GetDefaultProject retrieves the saved default project name from the local config.
+// Returns an empty string if the value is not set.
 func GetDefaultProject() string {
 	return viper.GetString("context.project")
 }
