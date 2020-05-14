@@ -54,7 +54,7 @@ func (k *KubectlWrapper) cmd(args ...string) (string, error) {
 }
 
 func (k *KubectlWrapper) cmdWithStdinPiped(in io.Reader, args ...string) (string, error) {
-	c := exec.Command(k.binary, "apply", "-f", "-")
+	c := exec.Command(k.binary, args...)
 	c.Stdin = in
 
 	b, err := c.CombinedOutput()

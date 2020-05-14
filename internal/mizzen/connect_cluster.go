@@ -33,7 +33,7 @@ func ConnectAndInstallAgent(kw *KubectlWrapper, orgID string, projectID string, 
 		}
 	}
 
-	if err := installAgent(kw, credentials); err != nil {
+	if err := installAgent(kw, clusterName, credentials); err != nil {
 		return &cli.InternalError{
 			Message: "Failed to install in-cluster agent. Please check if kubectl has access to the requested cluster",
 			Err:     err,
@@ -85,7 +85,7 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 	return &creds, nil
 }
 
-func installAgent(kw *KubectlWrapper, creds *credentials) error {
+func installAgent(kw *KubectlWrapper, clusterName string, creds *credentials) error {
 	encodedToken := base64.StdEncoding.EncodeToString([]byte(creds.ClientID + ";" + creds.ClientSecret))
 	client := &http.Client{
 		Timeout: time.Second * 30,
@@ -101,7 +101,7 @@ func installAgent(kw *KubectlWrapper, creds *credentials) error {
 		return err
 	}
 
-	if _, err := kw.cmdWithStdinPiped(bytes.NewBuffer(b), "apply", "-f", "-"); err != nil {
+	if _, err := kw.cmdWithStdinPiped(bytes.NewBuffer(b), "--cluster", clusterName, "apply", "-f", "-"); err != nil {
 		return fmt.Errorf("failed to install agent: %w", err)
 	}
 
