@@ -2,8 +2,6 @@ package config
 
 import (
 	"fmt"
-	"io"
-	"log"
 	"os"
 	"path"
 
@@ -59,15 +57,12 @@ func InitPlatformerDirectory() error {
 	return nil
 }
 
-// InitDebugLogs initializes the debug-log file. Appends if exists
-// and sets the stdlib log output to the LogFile
-func InitDebugLogs() error {
+// InitDebugLogFile initializes the debug-log file (create/append)
+// and returns a pointer to the file.
+func InitDebugLogFile() (*os.File, error) {
 	f, err := os.OpenFile(LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		return fmt.Errorf("error opening debug-log file: %w", err)
+		return nil, fmt.Errorf("error opening debug-log file: %w", err)
 	}
-	defer f.Close()
-	log.SetOutput(io.Writer(f))
-
-	return nil
+	return f, nil
 }
