@@ -7,7 +7,7 @@ import (
 )
 
 // SetCmd is the base command for all resource set commands
-// set is the same as 'selectprompt' but without the prompt list.
+// set is the same as 'select prompt' but without the prompt list.
 var SetCmd = &cobra.Command{
 	Use:   "set",
 	Short: "Set your default organization and project",

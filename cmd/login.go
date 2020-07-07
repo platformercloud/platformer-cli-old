@@ -47,7 +47,7 @@ func login() error {
 	done := make(chan string)
 	errc := make(chan error)
 
-	// Start the server on a seperate go routine
+	// Start the server on a separate go routine
 	go startServerAndAwaitToken(server, done, errc)
 
 	oauthConfig = &oauth2.Config{
@@ -66,7 +66,7 @@ func login() error {
 		return &cli.UserError{Message: fmt.Sprintf("cannot open browser: %s", err)}
 	}
 
-	// Block until a response from the server is recieved
+	// Block until a response from the server is received
 	// or until it times out.
 	select {
 	case token := <-done:
@@ -81,11 +81,11 @@ func login() error {
 		return nil
 
 	case err := <-errc:
-		server.Close()
+		_ = server.Close()
 		return &cli.InternalError{Err: err, Message: "cannot listen on port " + port}
 
 	case <-time.After(2 * time.Minute):
-		server.Close()
+		_ = server.Close()
 		return &cli.UserError{Message: "timed out, try again"}
 	}
 }

@@ -101,7 +101,7 @@ func connectCluster() error {
 		return err
 	}
 
-	fmt.Println(green("Success!"), "Cluster", selection.ClusterName, "has been succesfully connected to Platformer Cloud")
+	fmt.Println(green("Success!"), "Cluster", selection.ClusterName, "has been successfully connected to Platformer Cloud")
 	fmt.Println("You may now deploy applications to your application through the platformer console:", consoleURL)
 	return nil
 }
