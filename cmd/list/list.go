@@ -31,7 +31,7 @@ var ListCmd = &cobra.Command{
 }
 
 func init() {
-	// Register subcommands for the list command
+	// Register sub commands for the list command
 	ListCmd.AddCommand(organizationListCmd)
 	ListCmd.AddCommand(projectListCmd)
 }
