@@ -70,7 +70,7 @@ func login() error {
 	// or until it times out.
 	select {
 	case token := <-done:
-		server.Close()
+		_ = server.Close()
 		permanentToken, err := auth.FetchPermanentToken(token)
 		if err != nil {
 			return &cli.InternalError{Err: err, Message: "failed to sign in"}

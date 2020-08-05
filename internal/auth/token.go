@@ -11,7 +11,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-const tokenCreateURL = "https://auth-module.dev.x.platformer.com/api/v1/serviceaccount/token/create"
+const tokenCreateURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/serviceaccount/token/create"
 
 // FetchPermanentToken fetches a Permanent token from the Auth API
 // using the provided access token
