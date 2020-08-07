@@ -10,7 +10,7 @@ import (
 	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
-const projectListURL = "https://auth-module.dev.x.platformer.com/api/v1/organization/project/list"
+const projectListURL = "https://api.ambassador.dev.platformer.com/api/v1/organization/project/list"
 
 // Project models a Platformer Project
 type Project struct {
@@ -28,7 +28,7 @@ type ProjectList map[string]Project
 
 // Names returns the names of the projects
 func (p ProjectList) Names() []string {
-	names := []string{}
+	var names []string
 	for n := range p {
 		names = append(names, n)
 	}

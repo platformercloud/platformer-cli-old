@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
@@ -27,6 +28,9 @@ type credentials struct {
 func ConnectAndInstallAgent(kw *KubectlWrapper, orgID string, projectID string, clusterName string) error {
 	credentials, err := register(orgID, projectID, clusterName)
 	if err != nil {
+		if _, ok := err.(*cli.UserError); ok {
+			return err
+		}
 		return &cli.InternalError{
 			Message: "Failed to register cluster",
 			Err:     err,
@@ -46,13 +50,11 @@ func ConnectAndInstallAgent(kw *KubectlWrapper, orgID string, projectID string, 
 func register(orgID string, projectID string, clusterName string) (*credentials, error) {
 	var body bytes.Buffer
 	json.NewEncoder(&body).Encode(struct {
-		ClusterType    string   `json:"cluster_type"`
 		ClusterName    string   `json:"cluster_name"`
 		ProjectID      string   `json:"project_id"`
 		OrganizationID string   `json:"organization_id"`
 		WhitelistIPs   []string `json:"whitelist_ips"`
 	}{
-		"private",
 		clusterName,
 		projectID,
 		orgID,
@@ -74,7 +76,11 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 	}
 
 	if r.StatusCode >= 400 {
-		return nil, fmt.Errorf("bad request error: %s", string(b))
+		errMsg := string(b)
+		if strings.Contains(errMsg, "already exists") {
+			return nil, &cli.UserError{Message: "A Cluster with the same name is already registered under the selected Project"}
+		}
+		return nil, fmt.Errorf("bad request error: %s", errMsg)
 	}
 
 	var creds credentials
@@ -98,7 +104,7 @@ func installAgent(kw *KubectlWrapper, clusterName string, creds *credentials) er
 
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		return err
+		return fmt.Errorf("cannot read request body: %w", err)
 	}
 
 	if _, err := kw.cmdWithStdinPiped(bytes.NewBuffer(b), "--cluster", clusterName, "apply", "-f", "-"); err != nil {

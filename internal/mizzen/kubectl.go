@@ -1,6 +1,7 @@
 package mizzen
 
 import (
+	"fmt"
 	"io"
 	"os/exec"
 	"strings"
@@ -59,7 +60,7 @@ func (k *KubectlWrapper) cmdWithStdinPiped(in io.Reader, args ...string) (string
 
 	b, err := c.CombinedOutput()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("kubectl '%s' returned an error: %s: %w", strings.Join(args, " "), string(b), err)
 	}
 	return string(b), nil
 }

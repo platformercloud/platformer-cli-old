@@ -23,7 +23,7 @@ Create your own Cluster or deploy your applications on a shared Cluster fully-ma
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	rootCmd.Execute()
+	_ = rootCmd.Execute()
 }
 
 func init() {
