@@ -1,4 +1,4 @@
-name: Go
+name: Platformer CLI
 
 on:
   push:
