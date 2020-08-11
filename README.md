@@ -1,4 +1,6 @@
 # Platformer CLI
+![Platformer CLI](https://github.com/platformer-com/platformer-cli/workflows/Platformer%20CLI/badge.svg) 
+
 Platformer Tools can be used to manage, and deploy your Platformer project from the command line.
 
 * Deploy code and assets to your Firebase projects
