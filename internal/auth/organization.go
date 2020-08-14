@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	orgListURL = "https://api.ambassador.dev.platformer.com/api/v1/organization/list"
+	orgListURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/organization/list"
 )
 
 // Organization models a Platformer Organization

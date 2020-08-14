@@ -10,7 +10,7 @@ import (
 	"github.com/platformer-com/platformer-cli/internal/config"
 )
 
-const projectListURL = "https://api.ambassador.dev.platformer.com/api/v1/organization/project/list"
+const projectListURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/organization/project/list"
 
 // Project models a Platformer Project
 type Project struct {

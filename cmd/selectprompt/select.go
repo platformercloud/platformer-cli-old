@@ -20,7 +20,7 @@ var SelectCmd = &cobra.Command{
 	),
 	Args: cobra.ExactValidArgs(1),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		// Runs before all child commands (eg. project/org list)
+		// Runs before all child commands (eg. project/org select)
 		cli.HandleErrorAndExit(func() error {
 			if !auth.IsLoggedIn() {
 				return &cli.NotLoggedInError{}
