@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/platformer-com/platformer-cli/internal/cli"
+	"github.com/platformercloud/platformer-cli/internal/cli"
 )
 
 const (
@@ -49,7 +49,7 @@ func ConnectAndInstallAgent(kw *KubectlWrapper, orgID string, projectID string, 
 
 func register(orgID string, projectID string, clusterName string) (*credentials, error) {
 	var body bytes.Buffer
-	json.NewEncoder(&body).Encode(struct {
+	_ = json.NewEncoder(&body).Encode(struct {
 		ClusterName    string   `json:"cluster_name"`
 		ProjectID      string   `json:"project_id"`
 		OrganizationID string   `json:"organization_id"`

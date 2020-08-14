@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/platformer-com/platformer-cli/cmd/list"
-	"github.com/platformer-com/platformer-cli/cmd/selectprompt"
-	"github.com/platformer-com/platformer-cli/cmd/set"
-	"github.com/platformer-com/platformer-cli/internal/config"
+	"github.com/platformercloud/platformer-cli/cmd/list"
+	"github.com/platformercloud/platformer-cli/cmd/selectprompt"
+	"github.com/platformercloud/platformer-cli/cmd/set"
+	"github.com/platformercloud/platformer-cli/internal/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

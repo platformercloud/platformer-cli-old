@@ -7,7 +7,7 @@ import (
 
 	"github.com/gookit/color"
 
-	"github.com/platformer-com/platformer-cli/internal/config"
+	"github.com/platformercloud/platformer-cli/internal/config"
 )
 
 // InternalError implements a cli.Error that cannot be

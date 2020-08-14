@@ -9,13 +9,13 @@ import (
 // SaveToken saves the given permanent token to the local config
 func SaveToken(token string) {
 	viper.Set("auth.token", strings.TrimSpace(token))
-	viper.WriteConfig()
+	_ = viper.WriteConfig()
 }
 
 // RemoveToken removes the locally saved token
 func RemoveToken() {
 	viper.Set("auth.token", "")
-	viper.WriteConfig()
+	_ = viper.WriteConfig()
 }
 
 // GetToken retrieves the locally stored perm.token
@@ -27,7 +27,7 @@ func GetToken() string {
 // SetDefaultOrg saves a given organization name to the local config
 func SetDefaultOrg(orgName string) {
 	viper.Set("context.organization", strings.TrimSpace(orgName))
-	viper.WriteConfig()
+	_ = viper.WriteConfig()
 }
 
 // GetDefaultOrg retrieves the saved default org name from the local config.
@@ -39,7 +39,7 @@ func GetDefaultOrg() string {
 // SetDefaultProject saves a given project name to the local config
 func SetDefaultProject(projectName string) {
 	viper.Set("context.project", strings.TrimSpace(projectName))
-	viper.WriteConfig()
+	_ = viper.WriteConfig()
 }
 
 // GetDefaultProject retrieves the saved default project name from the local config.

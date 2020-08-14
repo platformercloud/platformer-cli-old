@@ -2,12 +2,12 @@ package selectprompt
 
 import (
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/auth"
+	"github.com/platformercloud/platformer-cli/internal/cli"
+	"github.com/platformercloud/platformer-cli/internal/config"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/gookit/color"
-	"github.com/platformer-com/platformer-cli/internal/auth"
-	"github.com/platformer-com/platformer-cli/internal/cli"
-	"github.com/platformer-com/platformer-cli/internal/config"
 	"github.com/spf13/cobra"
 )
 

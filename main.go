@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/platformercloud/platformer-cli/cmd"
+	"github.com/platformercloud/platformer-cli/internal/config"
 	"io"
 	"log"
 	"os"
-
-	"github.com/platformer-com/platformer-cli/cmd"
-	"github.com/platformer-com/platformer-cli/internal/config"
 )
 
 func main() {
