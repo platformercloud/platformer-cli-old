@@ -1,9 +1,9 @@
 package selectprompt
 
 import (
+	"github.com/platformer-com/platformer-cli/internal/auth"
+	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/spf13/cobra"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
 )
 
 // SelectCmd is the base command for all resource select prompt commands

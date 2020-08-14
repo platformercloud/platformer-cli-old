@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
+	"github.com/platformer-com/platformer-cli/internal/config"
 )
 
 const (
