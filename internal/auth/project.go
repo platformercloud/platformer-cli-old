@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/platformer-com/platformer-cli/internal/cli"
-	"github.com/platformer-com/platformer-cli/internal/config"
+	"github.com/platformercloud/platformer-cli/internal/cli"
+	"github.com/platformercloud/platformer-cli/internal/config"
 )
 
 const projectListURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/organization/project/list"

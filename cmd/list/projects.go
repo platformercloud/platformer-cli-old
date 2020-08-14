@@ -2,10 +2,10 @@ package list
 
 import (
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/auth"
+	"github.com/platformercloud/platformer-cli/internal/cli"
 	"strings"
 
-	"github.com/platformer-com/platformer-cli/internal/auth"
-	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/spf13/cobra"
 )
 
