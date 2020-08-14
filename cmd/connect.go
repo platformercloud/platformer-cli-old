@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/platformer-com/platformer-cli/internal/auth"
 	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/platformer-com/platformer-cli/internal/config"
@@ -79,7 +79,7 @@ func connectCluster() error {
 		return cli.TransformSurveyError(err)
 	}
 
-	green := color.New(color.FgHiGreen).SprintfFunc()
+	green := color.FgGreen.Render
 	confirmPrompt := &survey.Confirm{
 		Default: true,
 		Message: fmt.Sprintf("Cluster %s will be connected under Organization %s and Project %s. Proceed?",

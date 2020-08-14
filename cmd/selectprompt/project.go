@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/platformer-com/platformer-cli/internal/auth"
 	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/platformer-com/platformer-cli/internal/config"
@@ -51,7 +51,7 @@ func selectProjectWithPrompt() error {
 
 	config.SetDefaultProject(selectedProjectName)
 
-	green := color.New(color.FgHiGreen).SprintfFunc()
+	green := color.FgLightGreen.Render
 	fmt.Printf("%s and %s has been set as your default Organization and Project\n",
 		green(orgName),
 		green(selectedProjectName),

@@ -3,7 +3,7 @@ package set
 import (
 	"fmt"
 
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/platformer-com/platformer-cli/internal/auth"
 	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/platformer-com/platformer-cli/internal/config"
@@ -32,7 +32,7 @@ func validateAndSetOrg(orgName string) error {
 
 	config.SetDefaultOrg(orgName)
 
-	green := color.New(color.FgHiGreen).SprintfFunc()
+	green := color.FgLightGreen.Render
 	fmt.Printf("%s has been set as your default organization\n", green(orgName))
 
 	return nil

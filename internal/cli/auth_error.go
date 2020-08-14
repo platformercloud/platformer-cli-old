@@ -3,6 +3,8 @@ package cli
 import (
 	"fmt"
 	"os"
+
+	"github.com/gookit/color"
 )
 
 // NotLoggedInError is thrown when the user is not logged
@@ -10,7 +12,7 @@ import (
 type NotLoggedInError struct{ Message string }
 
 func (e *NotLoggedInError) Error() string {
-	return fmt.Sprintf("%s: %s", redSprint("Authentication Error"), e.Message)
+	return fmt.Sprintf("%s: %s", color.Danger.Render("Authentication Error"), e.Message)
 }
 
 // HandleAndExit prints a message to the user to log in

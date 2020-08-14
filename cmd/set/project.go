@@ -3,7 +3,7 @@ package set
 import (
 	"fmt"
 
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/platformer-com/platformer-cli/internal/auth"
 	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/platformer-com/platformer-cli/internal/config"
@@ -42,7 +42,7 @@ func validateAndSetProject(projectName string) error {
 
 	config.SetDefaultProject(projectName)
 
-	green := color.New(color.FgHiGreen).SprintfFunc()
+	green := color.FgGreen.Render
 	fmt.Printf("%s > %s has been set as your default organization and project\n",
 		green(orgName),
 		green(projectName),
