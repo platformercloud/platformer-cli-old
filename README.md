@@ -1,7 +1,9 @@
 # Platformer CLI
+![Platformer CLI](https://github.com/platformer-com/platformer-cli/workflows/Platformer%20CLI/badge.svg) 
+
 Platformer Tools can be used to manage, and deploy your Platformer project from the command line.
 
-* Deploy code and assets to your Firebase projects
+* Deploy code and assets to your Platformer projects
 * Covert configuration files to K8s format.
 
 To get started with the Platformer CLI, read the full list of commands below
@@ -25,3 +27,4 @@ To get started with the Platformer CLI, read the full list of commands below
 * ``platformer deploy`` - Deploy 
 * ``platformer help`` - Display help information
 * ``platformer use`` -  Set an active Platformer for your working directory.
+* ``platformer select`` -  Select your default organization or project .
