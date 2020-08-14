@@ -2,11 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/fatih/color"
+	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/spf13/cobra"
-	"golang.org/x/sys/windows"
 )
 
 // initCmd represents the init command
@@ -32,14 +31,6 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	enableWindowsColorSupport()
+	cli.EnableWindowsColorSupport()
 	rootCmd.AddCommand(initCmd)
-}
-
-// Cross-platformer compatible, enables ANSI colors on windows terminals.
-func enableWindowsColorSupport() {
-	stdout := windows.Handle(os.Stdout.Fd())
-	var originalMode uint32
-	windows.GetConsoleMode(stdout, &originalMode)
-	windows.SetConsoleMode(stdout, originalMode|windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING)
 }

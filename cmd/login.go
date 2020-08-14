@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
+	"github.com/platformer-com/platformer-cli/internal/auth"
+	"github.com/platformer-com/platformer-cli/internal/cli"
+	"github.com/platformer-com/platformer-cli/internal/config"
 
 	"github.com/fatih/color"
 	"github.com/rs/cors"

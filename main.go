@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"gitlab.platformer.com/project-x/platformer-cli/cmd"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
+	"github.com/platformer-com/platformer-cli/cmd"
+	"github.com/platformer-com/platformer-cli/internal/config"
 )
 
 func main() {

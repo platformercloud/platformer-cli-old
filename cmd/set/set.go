@@ -1,9 +1,9 @@
 package set
 
 import (
+	"github.com/platformer-com/platformer-cli/internal/auth"
+	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/spf13/cobra"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
 )
 
 // SetCmd is the base command for all resource set commands
