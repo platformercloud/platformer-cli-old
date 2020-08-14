@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/platformer-com/platformer-cli/cmd/list"
+	"github.com/platformer-com/platformer-cli/cmd/selectprompt"
+	"github.com/platformer-com/platformer-cli/cmd/set"
+	"github.com/platformer-com/platformer-cli/internal/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gitlab.platformer.com/project-x/platformer-cli/cmd/list"
-	"gitlab.platformer.com/project-x/platformer-cli/cmd/selectprompt"
-	"gitlab.platformer.com/project-x/platformer-cli/cmd/set"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
 )
 
 // RootCmd represents the base command when called without any sub commands

@@ -5,11 +5,11 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/fatih/color"
+	"github.com/platformer-com/platformer-cli/internal/auth"
+	"github.com/platformer-com/platformer-cli/internal/cli"
+	"github.com/platformer-com/platformer-cli/internal/config"
+	"github.com/platformer-com/platformer-cli/internal/mizzen"
 	"github.com/spf13/cobra"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/auth"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
-	"gitlab.platformer.com/project-x/platformer-cli/internal/mizzen"
 )
 
 var (

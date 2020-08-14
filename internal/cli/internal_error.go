@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"gitlab.platformer.com/project-x/platformer-cli/internal/config"
+	"github.com/platformer-com/platformer-cli/internal/config"
 )
 
 // InternalError implements a cli.Error that cannot be

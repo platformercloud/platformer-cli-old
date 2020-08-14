@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.platformer.com/project-x/platformer-cli/internal/cli"
+	"github.com/platformer-com/platformer-cli/internal/cli"
 )
 
 const (

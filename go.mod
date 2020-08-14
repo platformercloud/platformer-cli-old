@@ -1,4 +1,4 @@
-module gitlab.platformer.com/project-x/platformer-cli
+module github.com/platformer-com/platformer-cli
 
 go 1.13
 
