@@ -9,7 +9,7 @@ import (
 	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/platformer-com/platformer-cli/internal/config"
 
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/rs/cors"
 	"github.com/skratchdot/open-golang/open"
 	"github.com/spf13/cobra"
@@ -58,7 +58,7 @@ func login() error {
 	loginURL := oauthConfig.AuthCodeURL("state", oauth2.AccessTypeOffline)
 
 	fmt.Printf("Visit this URL on your device to log in:\n%s\n", loginURL)
-	fmt.Println(color.CyanString("\nYou will now be taken to your browser for authentication"))
+	color.FgCyan.Println("\nYou will now be taken to your browser for authentication")
 	time.Sleep(1 * time.Second)
 
 	// Redirect user to CLI login page
@@ -77,7 +77,7 @@ func login() error {
 		}
 
 		config.SaveToken(permanentToken)
-		fmt.Println(color.GreenString("Successfully logged in!"))
+		color.FgGreen.Println("Successfully logged in!")
 		return nil
 
 	case err := <-errc:

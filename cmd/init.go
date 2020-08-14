@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +24,7 @@ to quickly create a Cobra application.`,
 ######   #        #     #     #     #####    #     #  ######   #  #  #  #####    ######  
 #        #        #######     #     #        #     #  #   #    #     #  #        #   #
 #        #######  #     #     #     #        #######  #     #  #     #  #######  #     #`
-		fmt.Println(color.BlueString(banner))
+		color.FgBlack.Println(banner)
 		fmt.Println("\nYou're about to initialize a Platformer project in this directory: ")
 	},
 }

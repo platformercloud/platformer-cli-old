@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/gookit/color"
+
 	"github.com/platformer-com/platformer-cli/internal/config"
 )
 
@@ -27,8 +29,8 @@ func (e *InternalError) Error() string {
 func (e *InternalError) printAndExit() {
 	log.Printf("[internal] error: %v\n", e)
 
-	redFprint(os.Stderr, "An unexpected error has occured: %s\n", e.Message)
-	magentaFprint(os.Stderr, "This is likely a problem with the Platformer CLI.\n")
+	color.Error.Printf("An unexpected error has occured: %s\n", e.Message)
+	color.Magenta.Printf("This is likely a problem with the Platformer CLI.\n")
 	fmt.Fprintf(
 		os.Stderr, "Refer to the debug-log at %s and contact support through "+
 			"https://platformer.com/contact\n",

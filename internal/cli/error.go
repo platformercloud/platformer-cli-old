@@ -1,16 +1,5 @@
 package cli
 
-import (
-	"github.com/fatih/color"
-)
-
-var (
-	redFprint = color.New(color.Bold, color.FgRed).FprintfFunc()
-	redSprint = color.New(color.FgRed).SprintFunc()
-
-	magentaFprint = color.New(color.FgMagenta).FprintfFunc()
-)
-
 // Error must implemented by all cli errors in this package
 type Error interface {
 	Error() string

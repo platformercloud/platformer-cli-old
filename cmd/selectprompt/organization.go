@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"github.com/platformer-com/platformer-cli/internal/auth"
 	"github.com/platformer-com/platformer-cli/internal/cli"
 	"github.com/platformer-com/platformer-cli/internal/config"
@@ -41,7 +41,7 @@ func selectOrgWithPrompt() error {
 
 	config.SetDefaultOrg(selectedOrgName)
 
-	green := color.New(color.FgHiGreen).SprintfFunc()
+	green := color.FgLightGreen.Render
 	fmt.Printf("%s has been set as your default organization\n", green(selectedOrgName))
 
 	return nil

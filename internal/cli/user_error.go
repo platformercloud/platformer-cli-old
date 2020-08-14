@@ -1,8 +1,9 @@
 package cli
 
 import (
-	"fmt"
 	"os"
+
+	"github.com/gookit/color"
 )
 
 // UserError implements a cli.Error that can be safely printed
@@ -10,10 +11,10 @@ import (
 type UserError struct{ Message string }
 
 func (e *UserError) Error() string {
-	return fmt.Sprintf("%s: %s", redSprint("Error:"), e.Message)
+	return e.Message
 }
 
 func (e *UserError) printAndExit() {
-	fmt.Fprintln(os.Stderr, e)
+	color.Error.Tips(e.Message)
 	os.Exit(1)
 }
