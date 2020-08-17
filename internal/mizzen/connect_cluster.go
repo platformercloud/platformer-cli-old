@@ -5,18 +5,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/util"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/platformercloud/platformer-cli/internal/cli"
-)
-
-const (
-	mizzenAPI         = "https://mizzen.dev.x.platformer.com"
-	registrationURL   = mizzenAPI + "/api/v1/cluster"
-	yamlGenerationURL = mizzenAPI + "/generate/v1/agent/"
 )
 
 type credentials struct {
@@ -64,7 +59,7 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 	client := &http.Client{
 		Timeout: time.Second * 30,
 	}
-	r, err := client.Post(registrationURL, "application/json", &body)
+	r, err := client.Post(util.MizzenClusterRegistrationURL, "application/json", &body)
 	if err != nil {
 		return nil, fmt.Errorf("api request failed (register cluster): %w", err)
 	}
@@ -96,7 +91,7 @@ func installAgent(kw *KubectlWrapper, clusterName string, creds *credentials) er
 	client := &http.Client{
 		Timeout: time.Second * 30,
 	}
-	r, err := client.Get(yamlGenerationURL + encodedToken)
+	r, err := client.Get(util.MizzenYAMLGenerationURL + encodedToken)
 	if err != nil {
 		return fmt.Errorf("failed to get agent installation yaml: %w", err)
 	}

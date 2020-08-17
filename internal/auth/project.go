@@ -3,14 +3,13 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/util"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/platformercloud/platformer-cli/internal/cli"
 	"github.com/platformercloud/platformer-cli/internal/config"
 )
-
-const projectListURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/organization/project/list"
 
 // Project models a Platformer Project
 type Project struct {
@@ -37,7 +36,7 @@ func (p ProjectList) Names() []string {
 
 // LoadProjectList loads a list of Projects for the given organization
 func LoadProjectList(organizationID string) (ProjectList, error) {
-	url := fmt.Sprintf("%s/%s", projectListURL, organizationID)
+	url := fmt.Sprintf("%s/%s", util.AuthProjectListURL, organizationID)
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Authorization", config.GetToken())
 

@@ -47,3 +47,18 @@ func SetDefaultProject(projectName string) {
 func GetDefaultProject() string {
 	return viper.GetString("context.project")
 }
+
+func GetDefaultContextURL() string {
+	defaultContextURL := "https://api.ambassador.dev.platformer.com"
+
+	if viper.GetString("context.url") != "" {
+		return viper.GetString("context.url")
+	}
+
+	return defaultContextURL
+
+}
+
+func SetDefaultContextURL(url string) {
+	viper.Set("context.url", strings.TrimSpace(url))
+}

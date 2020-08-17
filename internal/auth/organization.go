@@ -3,14 +3,11 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/util"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/platformercloud/platformer-cli/internal/config"
-)
-
-const (
-	orgListURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/organization/list"
 )
 
 // Organization models a Platformer Organization
@@ -34,7 +31,7 @@ type OrganizationList map[string]Organization
 
 // Names returns the names of the organizations
 func (o OrganizationList) Names() []string {
-	names := []string{}
+	var names []string
 	for n := range o {
 		names = append(names, n)
 	}
@@ -45,7 +42,7 @@ func (o OrganizationList) Names() []string {
 // user and also reads the currently selected org from the local config
 // (and validates if the currently selected org is still valid)
 func LoadOrganizationList() (OrganizationList, error) {
-	req, _ := http.NewRequest("GET", orgListURL, nil)
+	req, _ := http.NewRequest("GET", util.AuthOrganizationListURL, nil)
 	req.Header.Add("Authorization", config.GetToken())
 
 	client := &http.Client{}

@@ -6,6 +6,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func getSetArgAliases() []string {
+	aliases := [][]string {
+		organizationSetCmd.Aliases,
+		projectSetCmd.Aliases,
+		contextSetCmd.Aliases,
+	}
+
+	concat := make([]string, len(aliases))
+	for _, a  := range aliases{
+		concat = append(concat, a...)
+	}
+
+	return concat
+}
+
 // SetCmd is the base command for all resource set commands
 // set is the same as 'select prompt' but without the prompt list.
 var SetCmd = &cobra.Command{
@@ -14,11 +29,9 @@ var SetCmd = &cobra.Command{
 	ValidArgs: []string{
 		organizationSetCmd.Use,
 		projectSetCmd.Use,
+		contextSetCmd.Use,
 	},
-	ArgAliases: append(
-		organizationSetCmd.Aliases,
-		projectSetCmd.Aliases...,
-	),
+	ArgAliases: getSetArgAliases(),
 	Args: cobra.ExactValidArgs(1),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		// Runs before all child commands (eg. project/org list)
@@ -34,4 +47,5 @@ var SetCmd = &cobra.Command{
 func init() {
 	SetCmd.AddCommand(organizationSetCmd)
 	SetCmd.AddCommand(projectSetCmd)
+	SetCmd.AddCommand(contextSetCmd)
 }
