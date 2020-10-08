@@ -31,7 +31,7 @@ type OrganizationList map[string]Organization
 
 // Names returns the names of the organizations
 func (o OrganizationList) Names() []string {
-	var names []string
+	names := make([]string, len(o))
 	for n := range o {
 		names = append(names, n)
 	}
