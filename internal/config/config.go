@@ -49,7 +49,7 @@ func GetDefaultProject() string {
 }
 
 func GetDefaultContextURL() string {
-	defaultContextURL := "https://api.ambassador.dev.platformer.com"
+	defaultContextURL := "https://beta.api.platformer.com"
 
 	if viper.GetString("context.url") != "" {
 		return viper.GetString("context.url")
