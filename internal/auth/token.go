@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/util"
 	"io/ioutil"
 	"net/http"
 	"strings"
 
 	"github.com/tidwall/gjson"
 )
-
-const tokenCreateURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/serviceaccount/token/create"
 
 // FetchPermanentToken fetches a Permanent token from the Auth API
 // using the provided access token
@@ -27,7 +26,7 @@ func FetchPermanentToken(token string) (string, error) {
 		nil,
 	})
 
-	req, _ := http.NewRequest("POST", tokenCreateURL, bytes.NewReader(b))
+	req, _ := http.NewRequest("POST", util.AuthTokenCreateURL, bytes.NewReader(b))
 	req.Header.Set("Authorization", strings.TrimSpace(token))
 	req.Header.Set("Content-Type", "application/json")
 

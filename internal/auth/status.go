@@ -2,13 +2,10 @@ package auth
 
 import (
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/util"
 	"net/http"
 
 	"github.com/platformercloud/platformer-cli/internal/config"
-)
-
-const (
-	validateTokenURL = "https://api.ambassador.dev.platformer.com/auth/api/v1/user/logintime"
 )
 
 // IsLoggedIn checks if the user is logged in with the CLI
@@ -18,12 +15,12 @@ func IsLoggedIn() bool {
 	if t == "" {
 		return false
 	}
-	req, _ := http.NewRequest("PUT", validateTokenURL, nil)
+	req, _ := http.NewRequest("PUT", util.AuthValidTokenURL, nil)
 	req.Header.Set("Authorization", t)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("[internal] Error validating token: %v", err)
+		fmt.Printf("[internal] Error validating token: %v\n", err)
 		config.RemoveToken()
 		return false
 	}
