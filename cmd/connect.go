@@ -26,7 +26,7 @@ var (
 )
 
 // @todo - needs to be changed in production. These values must be injected at compile time somehow...
-const consoleURL = "https://console.dev.x.platformer.com"
+const consoleURL = "https://beta.console.platformer.com"
 
 func init() {
 	connectCmd.Flags().StringVarP(&orgNameFlag, "organization", "o", "", "--organization=<ORG_NAME> or -o <ORG_NAME>")

@@ -106,7 +106,7 @@ func startServerAndAwaitToken(server *http.Server, tokenChan chan<- string, errc
 	c := cors.New(cors.Options{
 		// @TODO: add production/staging URLs
 		AllowedMethods:     []string{http.MethodPost, http.MethodOptions, http.MethodConnect},
-		AllowedOrigins:     []string{"http://localhost:3000", "https://console.dev.x.platformer.com", "http://localhost:9999"},
+		AllowedOrigins:     []string{"http://localhost:3000", "https://console.dev.x.platformer.com", "http://localhost:9999", "https://beta.console.platformer.com"},
 		AllowedHeaders:     []string{"*"},
 		ExposedHeaders:     []string{"*"},
 		AllowCredentials:   false,
