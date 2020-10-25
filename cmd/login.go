@@ -21,7 +21,7 @@ var (
 )
 
 const (
-	authURL     string = "https://console.dev.x.platformer.com/cli-login"
+	authURL     string = "http://beta.console.platformer.com/cli-login"
 	port        string = ":9999"
 	redirectURL string = "http://127.0.0.1" + port
 )
