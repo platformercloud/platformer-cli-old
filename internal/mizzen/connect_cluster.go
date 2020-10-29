@@ -48,11 +48,13 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 		ClusterName    string   `json:"cluster_name"`
 		ProjectID      string   `json:"project_id"`
 		OrganizationID string   `json:"organization_id"`
+		ClusterType    string   `json:"cluster_type"` // Added this line too but still failing
 		WhitelistIPs   []string `json:"whitelist_ips"`
 	}{
 		clusterName,
 		projectID,
 		orgID,
+		"private",
 		[]string{}, // Whitelist IPs are not set using the CLI
 	})
 
@@ -60,6 +62,8 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 		Timeout: time.Second * 30,
 	}
 	r, err := client.Post(util.MizzenClusterRegistrationURL, "application/json", &body)
+	//res, _ := ioutil.ReadAll(r.Body)
+	//fmt.Println(res)
 	if err != nil {
 		return nil, fmt.Errorf("api request failed (register cluster): %w", err)
 	}

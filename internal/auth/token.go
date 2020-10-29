@@ -20,9 +20,8 @@ func FetchPermanentToken(token string) (string, error) {
 		Description string  `json:"description"`
 		ExpiredIn   *string `json:"expired_in"`
 	}{
-		// @todo - add proper values here
-		"test-service account",
-		"",
+		"cli-service account",
+		"Getting token for CLI use",
 		nil,
 	})
 

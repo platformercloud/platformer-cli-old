@@ -21,11 +21,14 @@ func IsLoggedIn() bool {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("[internal] Error validating token: %v\n", err)
-		config.RemoveToken()
+		//TODO: Discuss with Binura
+		//config.RemoveToken()
 		return false
 	}
+	fmt.Printf("Status Code %v\n", resp.StatusCode)
 	if resp.StatusCode != 200 {
-		config.RemoveToken()
+		//TODO: Discuss with Binura
+		//config.RemoveToken()
 		return false
 	}
 	return true
