@@ -49,7 +49,7 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 		ClusterName    string   `json:"cluster_name"`
 		ProjectID      string   `json:"project_id"`
 		OrganizationID string   `json:"organization_id"`
-		ClusterType    string   `json:"cluster_type"` // Added this line too but still failing
+		ClusterType    string   `json:"cluster_type"`
 		WhitelistIPs   []string `json:"whitelist_ips"`
 	}{
 		clusterName,
@@ -63,13 +63,10 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 		Timeout: time.Second * 30,
 	}
 
-	req,_ := http.NewRequest("POST", util.MizzenClusterRegistrationURL, &body)
+	req, _ := http.NewRequest("POST", util.MizzenClusterRegistrationURL, &body)
 	req.Header.Add("Authorization", config.GetToken())
 
 	r, err := client.Do(req)
-
-	//r, err := client.Post(util.MizzenClusterRegistrationURL, "application/json", &body)
-	//r.Header.Set("Authorization", config.GetToken())
 
 	if err != nil {
 		return nil, fmt.Errorf("api request failed (register cluster): %w", err)
