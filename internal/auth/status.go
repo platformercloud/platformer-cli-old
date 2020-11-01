@@ -24,6 +24,7 @@ func IsLoggedIn() bool {
 		config.RemoveToken()
 		return false
 	}
+
 	if resp.StatusCode != 200 {
 		config.RemoveToken()
 		return false

@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/platformercloud/platformer-cli/internal/config"
 	"github.com/platformercloud/platformer-cli/internal/util"
 	"io/ioutil"
 	"net/http"
@@ -48,18 +49,25 @@ func register(orgID string, projectID string, clusterName string) (*credentials,
 		ClusterName    string   `json:"cluster_name"`
 		ProjectID      string   `json:"project_id"`
 		OrganizationID string   `json:"organization_id"`
+		ClusterType    string   `json:"cluster_type"`
 		WhitelistIPs   []string `json:"whitelist_ips"`
 	}{
 		clusterName,
 		projectID,
 		orgID,
+		"private",
 		[]string{}, // Whitelist IPs are not set using the CLI
 	})
 
 	client := &http.Client{
 		Timeout: time.Second * 30,
 	}
-	r, err := client.Post(util.MizzenClusterRegistrationURL, "application/json", &body)
+
+	req, _ := http.NewRequest("POST", util.MizzenClusterRegistrationURL, &body)
+	req.Header.Add("Authorization", config.GetToken())
+
+	r, err := client.Do(req)
+
 	if err != nil {
 		return nil, fmt.Errorf("api request failed (register cluster): %w", err)
 	}

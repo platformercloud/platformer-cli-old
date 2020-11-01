@@ -14,6 +14,8 @@ func SaveToken(token string) {
 
 // RemoveToken removes the locally saved token
 func RemoveToken() {
+	viper.Set("context.organization", "")
+	viper.Set("context.project", "")
 	viper.Set("auth.token", "")
 	_ = viper.WriteConfig()
 }
